@@ -52,14 +52,48 @@ public class EmailAssistantRepository : IEmailAssistantRepository
             user = new AppUser
             {
                 Email = email.From,
-                IsActive = true
+                IsActive = true,
             };
 
             _context.AppUsers.Add(user);
-        }
 
-        if (!user.IsActive)
-            return null;
+
+            user.Context = new UserContext
+            {
+                UserId = user.Id,
+                UpdatedAt = DateTime.UtcNow,
+                Summary = email.Subject + " " + email.Body,
+                User = user,
+            };
+
+            _context.UserContexts.Add(user.Context);
+        }
+        else
+        {
+            var userContext = await _context.UserContexts
+                .FirstOrDefaultAsync(x => x.UserId == user.Id, cancellationToken);
+
+            if (!user.IsActive)
+                return null;
+
+            if (userContext == null)
+            {
+                user.Context = new UserContext
+                {
+                    UserId = user.Id,
+                    UpdatedAt = DateTime.UtcNow,
+                    Summary = email.Subject + " " + email.Body,
+                    User = user,
+                };
+
+                _context.UserContexts.Add(user.Context);
+            }
+            else
+            {
+                userContext.Summary = email.Subject + " " + email.Body;
+            }
+
+        }
 
         var conversation = await _context.Conversations
             .FirstOrDefaultAsync(

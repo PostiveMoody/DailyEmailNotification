@@ -119,7 +119,7 @@ public class OllamaAIService : IAIService
 
             options = new
             {
-                num_predict = 512,
+                num_predict = 2048,
                 temperature = 0.7
             }
         };
