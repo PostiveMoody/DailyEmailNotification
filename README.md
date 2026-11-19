@@ -1,6 +1,7 @@
 # DailyEmailNotification
 
 ### Локальный ИИ-ассистент для автоматизации электронной почты
+<img width="1281" height="583" alt="image" src="https://github.com/user-attachments/assets/b7ac2b73-3c04-4637-86d1-3c8c3438893c" />
 
 Приложение на **C# / .NET 8**, которое получает письма Gmail,
 обрабатывает их с помощью локальной модели **Qwen 3.5 4B** и отправляет
